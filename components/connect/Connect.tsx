@@ -33,7 +33,7 @@ export default function Connect() {
       <div className={s.btnContainer} onClick={()=>handleClick(connectMM)}>
         <MetaLogo/>
         Metamask
-        <span>Connect to Your Metamask Wallet</span>
+        <span>Connect to Your MetaMask Wallet</span>
       </div>
       <hr className={s.hr} />
       <div className={s.btnContainer} onClick={()=>handleClick(connectWC)}>

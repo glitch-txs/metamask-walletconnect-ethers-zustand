@@ -28,6 +28,7 @@
 
 .btnContainer img{
     margin: 8px 0;
+    filter: brightness(1.1);
 }
 
 .hr{

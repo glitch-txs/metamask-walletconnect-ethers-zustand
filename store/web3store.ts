@@ -59,7 +59,9 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
     connectMetamask: async()=>{
         const connectedProvider = await connectToMetamask()
-        set((state)=>({childProvider: connectedProvider}))
+        if(get().userAccount != ''){
+            set((state)=>({childProvider: connectedProvider}))
+        }
     },
 
     //Connect to walletconnet, popups QR modal

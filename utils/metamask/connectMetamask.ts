@@ -1,3 +1,4 @@
+import { useWeb3Store } from "../../store/web3store"
 import { checkAccountAndChainId } from "./helpers/checkAccountAndChain"
 import { checkMetamask } from "./helpers/checkMetamask"
 
@@ -17,6 +18,8 @@ export const connectToMetamask = async ()=>{
                 // EIP-1193 userRejectedRequest error
                 // If this happens, the user rejected the connection request.
                 console.log('user rejected the connection request');
+                // const web3Init = useWeb3Store.getState().web3Init
+                // web3Init()
               } else {
                 console.error('request connection error',err);
               }
