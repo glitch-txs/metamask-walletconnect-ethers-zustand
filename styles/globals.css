@@ -1,0 +1,30 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Work Sans', sans-serif;
+  min-height: 100vh;
+  background-color: rgb(32, 32, 32);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button{
+  margin: 25px 0;
+  padding: 3px;
+  display: block;
+  cursor: pointer;
+}
