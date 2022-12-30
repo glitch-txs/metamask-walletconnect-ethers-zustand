@@ -2,8 +2,8 @@ import { UniversalProvider } from "@walletconnect/universal-provider";
 import { Web3Modal } from "@web3modal/standalone";
 
 export const web3Modal = new Web3Modal({ 
-    // projectId: process.env.NEXT_PUBLIC_PROJECT_ID 
-  })
+  // projectId: process.env.NEXT_PUBLIC_PROJECT_ID 
+})
   
 web3Modal.setTheme({
   themeMode: "light",
@@ -40,7 +40,7 @@ export const WCInit = async()=> {
   
   provider.on("session_request", (event: any) => {
     // Handle session method requests, such as "eth_sign", "eth_sendTransaction", etc.
-    console.log(event)
+    console.log('session request event listener:',event)
   });
   
   provider.on("session_update", (e: any) => {

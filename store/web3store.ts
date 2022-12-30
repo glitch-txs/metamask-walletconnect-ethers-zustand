@@ -66,6 +66,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     connectWC: async()=>{
         const userConnected = await openWCModal()
 
+        //If the user refects the connection userConnected is going to be false, to prevent errors when init provider.
         if(userConnected){
             const web3Provider = new ethers.providers.Web3Provider(get().childProvider)
             const signer = web3Provider.getSigner()

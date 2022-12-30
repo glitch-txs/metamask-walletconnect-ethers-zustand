@@ -1,11 +1,6 @@
-import { UniversalProvider } from '@walletconnect/universal-provider';
-import { Web3Modal } from '@web3modal/standalone'
-import { ethers } from 'ethers';
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useWeb3Store } from '../store/web3store';
 import { connectToMetamask } from '../utils/metamask/connectMetamask';
-import { removeEventsMetamask } from '../utils/metamask/helpers/eventListeners';
-import { metamaskInit } from '../utils/metamask/metamaskInit';
 
 
 export default function HomePage() {
