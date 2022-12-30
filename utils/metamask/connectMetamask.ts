@@ -1,6 +1,5 @@
 import { checkAccountAndChainId } from "./helpers/checkAccountAndChain"
 import { checkMetamask } from "./helpers/checkMetamask"
-import { useWeb3Store } from '../../store/web3store'
 
 export const connectToMetamask = async ()=>{
 

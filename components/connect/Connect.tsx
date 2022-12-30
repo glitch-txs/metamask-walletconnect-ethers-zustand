@@ -1,17 +1,48 @@
-import React, { useState } from 'react'
-import Modal from '../Modal/Modal'
+import { useEffect, useState } from 'react'
+import Modal from '../Modal/Modal';
+import { useWeb3Store } from '../../store/web3store';
+import s from './Connect.module.css'
+import Image from 'next/image';
+import trust from '../../public/trust.svg'
+import MetaLogo from './metamaskLogo/MetaLogo';
 
-type Props = {}
 
-const Connect = (props: Props) => {
+export default function Connect() {
 
-  const [modal, setModal] = useState<boolean>(false)
+  const web3Init = useWeb3Store((state)=>state.web3Init)
+  const connectWC = useWeb3Store((state)=>state.connectWC)
+  const connectMM = useWeb3Store((state)=>state.connectMetamask)
   
+  const [modal, setModal] = useState<boolean>(false)
+
+  const handleClick = (connect: ()=>void)=>{
+    setModal(false)
+    connect()
+  }
+
+  useEffect(()=>{
+    web3Init()
+  },[])
+
   return (
-    <Modal modal={modal} setModal={setModal} >
-      MODAL HEHE
-    </Modal>
+    <>
+      <button onClick={()=> setModal(true)} >Connect</button>
+
+      <Modal modal={modal} setModal={setModal} >
+
+      <div className={s.btnContainer} onClick={()=>handleClick(connectMM)}>
+        <MetaLogo/>
+        Metamask
+        <span>Connect to Your Metamask Wallet</span>
+      </div>
+      <hr className={s.hr} />
+      <div className={s.btnContainer} onClick={()=>handleClick(connectWC)}>
+        <Image src={trust} width={60} alt='' />
+        Trust Wallet
+        <span>Scan with Walletconnect to connect</span>
+      </div>
+
+      </Modal>
+    </>
   )
 }
-
-export default Connect

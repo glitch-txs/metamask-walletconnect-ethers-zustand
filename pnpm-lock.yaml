@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@metamask/logo': ^3.1.1
   '@next/font': 13.1.1
   '@types/node': 18.11.17
   '@types/react': 18.0.26
@@ -16,6 +17,7 @@ specifiers:
   zustand: ^4.1.5
 
 dependencies:
+  '@metamask/logo': 3.1.1
   '@next/font': 13.1.1
   '@types/node': 18.11.17
   '@types/react': 18.0.26
@@ -378,6 +380,14 @@ packages:
 
   /@lit/reactive-element/1.5.0:
     resolution: {integrity: sha512-fQh9FDK0LPTwDk+0HhSZEtb8K0LTN1wXerwpGrWA+a8tWulYRDLI4vQDWp4GOIsewn0572KYV/oZ3+492D7osA==}
+    dev: false
+
+  /@metamask/logo/3.1.1:
+    resolution: {integrity: sha512-8/ObOWyBtwbe3/r9QbXMs+aKK2EgcYp2NiF4fm1xIO/c3aBMN5wBc2zUnl1lpHU71l70/OH5cxHbyDYoEgdMoA==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      gl-mat4: 1.1.4
+      gl-vec3: 1.0.3
     dev: false
 
   /@motionone/animation/10.15.1:
@@ -1243,6 +1253,14 @@ packages:
   /get-caller-file/2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
+    dev: false
+
+  /gl-mat4/1.1.4:
+    resolution: {integrity: sha512-3NrFjvQMNSITLncF5Xz7EqfzB3IZczfNuJ6+ZFf2ko8hKhKzp8UXrdaRWm3AvpoowKMtnFDE7YpV5uD9AIxltw==}
+    dev: false
+
+  /gl-vec3/1.0.3:
+    resolution: {integrity: sha512-B4cOpz3vpwRwkmjVsv+JKgBlPOFSLQApDAaUFrowXPgx6Y/SOhTmeciOKHvcFqls6DsGuZ+YHXo9Py5oVia7bA==}
     dev: false
 
   /hash.js/1.1.7:
