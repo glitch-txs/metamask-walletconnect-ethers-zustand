@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import create from 'zustand'
 import { connectToMetamask } from '../utils/metamask/connectMetamask'
+import { removeEventsMetamask } from '../utils/metamask/helpers/eventListeners'
 import { metamaskInit } from '../utils/metamask/metamaskInit'
 import { openWCModal } from '../utils/WCConnect'
 import { WCInit } from '../utils/WCInit'
@@ -8,7 +9,8 @@ import { WCInit } from '../utils/WCInit'
 //WC stands for Walletconnect
 
 interface Web3Store {
-    // isConnecting: boolean
+    //We need a time for the WC init to load
+    isConnecting: boolean
     // Modal will trigger the modal and show specific warning depending on the web3 states status.
     modal: '' | 'provider' | 'chain' | 'connect'
     isProvider: boolean
@@ -33,7 +35,7 @@ type ContractInfo = {
 }
 
 export const useWeb3Store = create<Web3Store>()((set, get) => ({
-    // isConnecting: false,
+    isConnecting: true,
     modal: '',
     isProvider: true,
     userAccount: '',
@@ -49,6 +51,10 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         if(get().userAccount != ''){
             set((state)=>({childProvider: metamaskProvider}))
         }
+
+        set((state)=>({isConnecting: false}))
+        
+        return ()=> removeEventsMetamask(metamaskProvider)
     },
 
     connectMetamask: async()=>{
@@ -58,24 +64,25 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
     //Connect to walletconnet, popups QR modal
     connectWC: async()=>{
-        await openWCModal()
+        const userConnected = await openWCModal()
 
-        const web3Provider = new ethers.providers.Web3Provider(get().childProvider)
-        const signer = web3Provider.getSigner()
-
-        const address = await signer.getAddress()
-        set((state)=>({userAccount: address}))
-
-        const chainId = await signer.getChainId()
-
-        if(chainId != 56){
-            set((state)=>({ chainId: false }))
-            console.log('invalid chain id')
-        }else if(chainId == 56){
-            set((state)=>({ chainId: true }))
-            console.log('valid chain id')
+        if(userConnected){
+            const web3Provider = new ethers.providers.Web3Provider(get().childProvider)
+            const signer = web3Provider.getSigner()
+    
+            const address = await signer.getAddress()
+            set((state)=>({userAccount: address}))
+    
+            const chainId = await signer.getChainId()
+    
+            if(chainId != 56){
+                set((state)=>({ chainId: false }))
+                console.log('invalid chain id')
+            }else if(chainId == 56){
+                set((state)=>({ chainId: true }))
+                console.log('valid chain id')
+            }
         }
-
     },
 
     disconnectWC: ()=> {
