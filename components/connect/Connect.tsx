@@ -42,7 +42,7 @@ export default function Connect() {
   },[])
 
   return (
-    <>
+    <div className={s.container}>
       <button onClick={handleConnect} >{ userAccount != '' ? 'Connected' : (isConnecting ? 'Loading' : 'Connect') }</button>
 
       <Modal modal={modal} setModal={setModal} >
@@ -61,6 +61,6 @@ export default function Connect() {
 
       </Modal>
       <ModalWarn setModal={setModal}/>
-    </>
+    </div>
   )
 }

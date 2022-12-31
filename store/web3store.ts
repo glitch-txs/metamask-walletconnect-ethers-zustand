@@ -8,6 +8,17 @@ import { WCInit } from '../utils/walletconnect/WCInit'
 
 //WC stands for Walletconnect
 
+export type ContractInfo = {
+    address: string
+    abi: any
+}
+
+export type CallInfo = {
+    name: string
+    params: any[]
+    action: 'read' | 'write'  
+}
+
 interface Web3Store {
     //We need a time for the WC init to load
     isConnecting: boolean
@@ -25,17 +36,10 @@ interface Web3Store {
     connectMetamask: ()=> void
     connectWC: ()=> void
     disconnectWC: ()=> void
-    callContract: (contractInfo: ContractInfo, params: any[], setStatus?: (status: string)=> void)=> void
+    callContract: (contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> any
     restartWeb3: ()=> void
 }
 
-type ContractInfo = {
-    address: string
-    abi: any[]
-
-    //function name
-    call: string
-}
 
 export const useWeb3Store = create<Web3Store>()((set, get) => ({
     isConnecting: true,
@@ -67,7 +71,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         const connectedProvider = await connectToMetamask()
 
         //if userAccount == '' it means the user rejected the connection 
-        if(get().userAccount != '' && connectedProvider){
+        if(get().userAccount != '' && Boolean(connectedProvider)){
             set((state)=>({childProvider: connectedProvider}))
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
@@ -107,7 +111,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         get().childProvider?.disconnect()
     },
 
-    callContract: async(contractInfo: ContractInfo, params: any[] = [], setStatus?: (status: '' | 'pending' | 'success' | 'error')=> void)=> {
+    callContract: async(contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> {
 
         if(!get().isProvider && get().Provider != null){
             set((state)=>({ modal: 'provider' }))
@@ -117,19 +121,34 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({ modal: 'chain' }))
         }else if(get().childProvider != null){
 
+            let answer: any;
+
             const web3Provider = new ethers.providers.Web3Provider(get().childProvider)
             const signer = web3Provider.getSigner()
-
+            
             const contract = new ethers.Contract(contractInfo.address, contractInfo.abi, signer)
-            setStatus?.('pending')
-            await contract[contractInfo.call](...params)
-            .then((res: ethers.ContractTransaction) => web3Provider.once(res.hash, ()=> setStatus?.('success')))
-            .catch((e: any)=> {
-                console.log(e)
-                setStatus?.('error')
-            })
 
-            setTimeout(()=>setStatus?.(''),2000)
+            if(callInfo.action == 'read'){
+                
+                const res = await contract[callInfo.name](...callInfo.params)
+                answer = res
+
+            }else if(callInfo.action == 'write'){
+
+                setStatus?.('pending')
+                await contract[callInfo.name](...callInfo.params)
+                .then((res: ethers.ContractTransaction) => web3Provider.once(res.hash, ()=> setStatus?.('success')))
+                .catch((e: any)=> {
+                    console.log(e)
+                    setStatus?.('error')
+                })
+    
+                setTimeout(()=>setStatus?.(''),2000)
+
+            }else{
+                console.log('wrong action in callInfo object')
+            }
+            return answer ? answer : null
         }
     },
 
