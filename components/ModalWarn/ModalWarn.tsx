@@ -9,7 +9,7 @@ interface Props {
     children: React.ReactNode,
   }
 
-const Modal = ({ modal, setModal, children }: Props) => {
+const ModalWarn = ({ modal, setModal, children }: Props) => {
 
   const [mounted, setMounted] = useState<boolean>(false)
   const modalRef = useRef<HTMLDivElement>(null);
@@ -39,8 +39,8 @@ const Modal = ({ modal, setModal, children }: Props) => {
                     </div>
                 </div>
                 </> 
-                , document.getElementById('modal') as HTMLDivElement) 
+                , document.getElementById('modalWarn') as HTMLDivElement) 
                 : null;
 }
 
-export default Modal
+export default ModalWarn
