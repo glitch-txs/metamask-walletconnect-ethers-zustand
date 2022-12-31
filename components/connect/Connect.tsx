@@ -12,6 +12,8 @@ export default function Connect() {
   const web3Init = useWeb3Store((state)=>state.web3Init)
   const connectWC = useWeb3Store((state)=>state.connectWC)
   const connectMM = useWeb3Store((state)=>state.connectMetamask)
+  const isConnecting = useWeb3Store((state)=>state.isConnecting)
+  const userAccount = useWeb3Store((state)=>state.userAccount)
   
   const [modal, setModal] = useState<boolean>(false)
 
@@ -20,13 +22,19 @@ export default function Connect() {
     connect()
   }
 
+  const handleConnect = ()=>{
+    //User will only be able to connect if he's disconnected.
+    if(userAccount != '') return
+    setModal(true)
+  }
+
   useEffect(()=>{
     web3Init()
   },[])
 
   return (
     <>
-      <button onClick={()=> setModal(true)} >Connect</button>
+      <button onClick={handleConnect} >{ userAccount != '' ? 'Connected' : (isConnecting ? 'Loading' : 'Connect') }</button>
 
       <Modal modal={modal} setModal={setModal} >
 

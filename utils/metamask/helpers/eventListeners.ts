@@ -12,6 +12,7 @@ const handleAccount = (accounts: string[]) => {
         console.log('user changed address to: ', accounts[0])
       }else{
         useWeb3Store.setState({ userAccount: ''})
+        useWeb3Store.getState().restartWeb3()
         console.log('user has disconnect')
       }
 }

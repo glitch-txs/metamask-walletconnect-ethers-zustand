@@ -1,5 +1,6 @@
 import { UniversalProvider } from "@walletconnect/universal-provider";
 import { Web3Modal } from "@web3modal/standalone";
+import { useWeb3Store } from "../../store/web3store";
 
 export const web3Modal = new Web3Modal({ 
   // projectId: process.env.NEXT_PUBLIC_PROJECT_ID 
@@ -50,6 +51,7 @@ export const WCInit = async()=> {
   provider.on("session_delete", () => {
     console.log("session ended");
     window.localStorage.clear()
+    useWeb3Store.getState().restartWeb3()
   });
 
   console.log('Walletconnect has initialized')

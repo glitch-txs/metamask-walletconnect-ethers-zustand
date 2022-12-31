@@ -3,8 +3,8 @@ import create from 'zustand'
 import { connectToMetamask } from '../utils/metamask/connectMetamask'
 import { removeEventsMetamask } from '../utils/metamask/helpers/eventListeners'
 import { metamaskInit } from '../utils/metamask/metamaskInit'
-import { openWCModal } from '../utils/WCConnect'
-import { WCInit } from '../utils/WCInit'
+import { openWCModal } from '../utils/walletconnect/WCConnect'
+import { WCInit } from '../utils/walletconnect/WCInit'
 
 //WC stands for Walletconnect
 
@@ -24,6 +24,7 @@ interface Web3Store {
     connectWC: ()=> void
     disconnectWC: ()=> void
     callContract: (contractInfo: ContractInfo, params: any[], setStatus?: (status: string)=> void)=> void
+    restartWeb3: ()=> void
 }
 
 type ContractInfo = {
@@ -36,7 +37,7 @@ type ContractInfo = {
 
 export const useWeb3Store = create<Web3Store>()((set, get) => ({
     isConnecting: true,
-    modal: '',
+    modal: 'connect',
     isProvider: true,
     userAccount: '',
     chainId: false,
@@ -58,14 +59,18 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     },
 
     connectMetamask: async()=>{
+        set((state)=>({isConnecting: true}))
         const connectedProvider = await connectToMetamask()
         if(get().userAccount != ''){
             set((state)=>({childProvider: connectedProvider}))
         }
+        
+        set((state)=>({isConnecting: false}))
     },
 
     //Connect to walletconnet, popups QR modal
     connectWC: async()=>{
+
         const userConnected = await openWCModal()
 
         //If the user refects the connection userConnected is going to be false, to prevent errors when init provider.
@@ -117,4 +122,18 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             setTimeout(()=>setStatus?.(''),2000)
         }
     },
+
+    restartWeb3:async()=>{
+        set((state)=>({isConnecting: true}))
+
+        const WCProvider_ = await WCInit()
+        set((state)=>({childProvider: WCProvider_}))
+
+        const metamaskProvider = await metamaskInit()
+        if(get().userAccount != ''){
+            set((state)=>({childProvider: metamaskProvider}))
+        }
+
+        set((state)=>({isConnecting: false}))
+    }
 }))

@@ -1,5 +1,5 @@
 import { web3Modal } from "./WCInit";
-import { useWeb3Store } from '../store/web3store'
+import { useWeb3Store } from '../../store/web3store'
 
 export const openWCModal = async()=> {
   let approved = false
