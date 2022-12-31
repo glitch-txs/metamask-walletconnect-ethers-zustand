@@ -19,6 +19,8 @@ interface Web3Store {
     Provider: any
     childProvider: any
 
+    clearModal: ()=>void
+
     web3Init: ()=> void
     connectMetamask: ()=> void
     connectWC: ()=> void
@@ -37,12 +39,14 @@ type ContractInfo = {
 
 export const useWeb3Store = create<Web3Store>()((set, get) => ({
     isConnecting: true,
-    modal: 'connect',
+    modal: '',
     isProvider: true,
     userAccount: '',
     chainId: false,
     Provider: null,
     childProvider: null,
+
+    clearModal: ()=> {set((state)=> ({ modal: '' }))},
 
     web3Init: async()=> {
         const WCProvider_ = await WCInit()
@@ -61,7 +65,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     connectMetamask: async()=>{
         set((state)=>({isConnecting: true}))
         const connectedProvider = await connectToMetamask()
-        
+
         //if userAccount == '' it means the user rejected the connection 
         if(get().userAccount != '' && connectedProvider){
             set((state)=>({childProvider: connectedProvider}))
@@ -98,6 +102,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         }
     },
 
+    //We won't currently use this
     disconnectWC: ()=> {
         get().childProvider?.disconnect()
     },

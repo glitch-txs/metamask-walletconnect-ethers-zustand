@@ -5,6 +5,7 @@ import s from './Connect.module.css'
 import Image from 'next/image';
 import trust from '../../public/trust.svg'
 import MetaLogo from './metamaskLogo/MetaLogo';
+import { isOnMobile } from '../../utils/handleMobile';
 
 
 export default function Connect() {
@@ -17,9 +18,16 @@ export default function Connect() {
   
   const [modal, setModal] = useState<boolean>(false)
 
+  const mobile = isOnMobile()
+
   const handleClick = (connect: ()=>void)=>{
-    setModal(false)
-    connect()
+    //If user is on mobile WC will open a link for options like Metamask or Walletconnect
+    if(mobile){
+      connectWC()
+    }else{
+      setModal(false)
+      connect()
+    }
   }
 
   const handleConnect = ()=>{
