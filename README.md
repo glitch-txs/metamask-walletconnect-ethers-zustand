@@ -1,11 +1,11 @@
 ```bach
 pnpm install
 ```
-### What's New?
+# What's New?
 
 - The three more important variables are managed by Zustand: User Account, Chain Id, Blockchain Provider.
 
-# Following the MetaMask API documentation:
+### Following the MetaMask API documentation:
 >You should only initiate a connection request in response to direct user action, such as clicking a button. You should always disable the "connect" button while the connection request is pending. You should never initiate a connection request on page load.
 
 - **isConnecting** boolean variable can be called to set a loader meanwhile the user is getting connected.
