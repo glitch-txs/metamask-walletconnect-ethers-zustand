@@ -61,8 +61,13 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     connectMetamask: async()=>{
         set((state)=>({isConnecting: true}))
         const connectedProvider = await connectToMetamask()
-        if(get().userAccount != ''){
+        
+        //if userAccount == '' it means the user rejected the connection 
+        if(get().userAccount != '' && connectedProvider){
             set((state)=>({childProvider: connectedProvider}))
+        } else if(!connectedProvider){
+            //If metamask is not installed then it will open this link to install the extention. (Deeplink)
+            window.open('https://metamask.app.link/dapp/metamask-walletconnect-ethers-zustand.vercel.app/', '_blank');
         }
         
         set((state)=>({isConnecting: false}))
@@ -129,6 +134,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         const WCProvider_ = await WCInit()
         set((state)=>({childProvider: WCProvider_}))
 
+        //I think this is not needed here
         const metamaskProvider = await metamaskInit()
         if(get().userAccount != ''){
             set((state)=>({childProvider: metamaskProvider}))
