@@ -1,17 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import style from './Modal.module.css'
+import style from './ModalWarn.module.css'
 import { useWeb3Store } from '../../store/web3store'
 import Connect from './modalCases/Connect'
 import Provider from './modalCases/Provider'
 import Chain from './modalCases/Chain'
+import Image from 'next/image'
+import warn from '../../public/warning.png'
+import cross from '../../public/cancel.png'
 
-const ModalWarn = () => {
+type Props = {
+  setModal: (modal: boolean)=>void
+}
+
+const ModalWarn = ({setModal}: Props) => {
 
   const [mounted, setMounted] = useState<boolean>(false)
   const modalRef = useRef<HTMLDivElement>(null);
 
   const modalState = useWeb3Store((state)=>state.modal)
+
   const clearModal = useWeb3Store((state)=>state.clearModal)
 
   useEffect(() => {
@@ -34,12 +42,15 @@ const ModalWarn = () => {
                 <>        
                 <div className={ modalState != '' ? style.container : style.containerClose }>
                     <div ref={modalRef} className={ modalState != '' ? style.card : style.cardClose }>
-
+                      <Image className={style.warnIcon} src={warn} width={50} alt='!'/>
+                      <div onClick={clearModal} >
+                        <Image className={style.crossIcon} src={cross} width={30} alt='x'/>
+                      </div>
                       {(()=>{
                       switch(modalState){
-                        case 'connect': return <Connect/>
-                        case 'provider': return <Provider/>
-                        case 'chain': return <Chain/>
+                        case 'connect': return <Connect setModal={setModal} clearModal={clearModal} />
+                        case 'provider': return <Provider clearModal={clearModal} />
+                        case 'chain': return <Chain clearModal={clearModal} />
                       }
                       })()}
 

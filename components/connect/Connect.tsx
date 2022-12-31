@@ -6,6 +6,7 @@ import Image from 'next/image';
 import trust from '../../public/trust.svg'
 import MetaLogo from './metamaskLogo/MetaLogo';
 import { isOnMobile } from '../../utils/handleMobile';
+import ModalWarn from '../ModalWarn/ModalWarn';
 
 
 export default function Connect() {
@@ -59,6 +60,7 @@ export default function Connect() {
       </div>
 
       </Modal>
+      <ModalWarn setModal={setModal}/>
     </>
   )
 }
