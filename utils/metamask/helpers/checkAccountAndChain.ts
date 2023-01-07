@@ -1,6 +1,6 @@
 import { useWeb3Store } from '../../../store/web3store'
 
-//Check account and chain id:
+//Check account and chain id and Save them in the Zustand store:
 export const checkAccountAndChainId = async(provider: any)=>{
 
   await provider.request({ method: 'eth_accounts' })
