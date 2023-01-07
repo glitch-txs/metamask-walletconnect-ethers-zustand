@@ -26,6 +26,8 @@ interface Web3Store {
     // Modal will trigger the modal and show specific warning depending on the web3 states status.
     modal: '' | 'provider' | 'chain' | 'connect'
     isProvider: boolean
+    //if WC connect init fails to connect this will be false
+    WCInitFailed: boolean
     userAccount: string
     chainId: boolean
     Provider: any
@@ -46,6 +48,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     isLoading: true,
     modal: '',
     isProvider: true,
+    WCInitFailed: false,
     userAccount: '',
     chainId: false,
     Provider: null,
@@ -88,6 +91,12 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
     //Connect to walletconnet, popups QR modal
     connectWC: async()=>{
+
+        if(get().WCInitFailed){
+            //If WCinit failed to load user will need to reload the website to connect
+            set((state)=>({ modal: 'provider' }))
+            return
+        }
 
         const userConnected = await openWCModal()
 
