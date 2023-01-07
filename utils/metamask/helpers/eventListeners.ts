@@ -8,22 +8,25 @@ type ConnectInfo = {
 
 const handleAccount = (accounts: string[]) => {
     if(typeof accounts[0] !== 'undefined'){
+        //if Metamask is locked then the provider won't get the user account as if they were connected
+        //If use unlock their metamask wallet after connecting to WC then there will be a conflict between them
+        useWeb3Store.getState().disconnectWC()
         useWeb3Store.setState({ userAccount: accounts[0]})
-        console.log('user changed address to: ', accounts[0])
+        console.log('Metamask: user changed address to: ', accounts[0])
       }else{
         useWeb3Store.setState({ userAccount: ''})
         useWeb3Store.getState().restartWeb3()
-        console.log('user has disconnect')
+        console.log('Metamask: user has disconnect')
       }
 }
 
 const handleChain = (chainId: string) => {
     if(chainId != '0x38'){
         useWeb3Store.setState({ chainId: false })
-        console.log('invalid chain id')
+        console.log('Metamask: invalid chain id')
     }else if(chainId == '0x38'){
         useWeb3Store.setState({ chainId: true })
-        console.log('valid chain id')
+        console.log('Metamask: valid chain id')
     }
 }
 
@@ -31,12 +34,12 @@ const handleConnect = (connectInfo: ConnectInfo)=>{
     const provider = checkMetamask()
     checkAccountAndChainId(provider)
     useWeb3Store.setState({ isProvider: true })
-    console.log('provider is connected in:', connectInfo.chainId)
+    console.log('Metamask: provider is connected in:', connectInfo.chainId)
 }
 
 const handleDisconnect = (err: any)=>{
     useWeb3Store.setState({ isProvider: false })
-    console.log('the provider is desconnected from blockchain, refresh the dapp and check your internet connection')
+    console.log('Metamask: the provider is desconnected from blockchain, refresh the dapp and check your internet connection')
     console.error(err)
 }
 

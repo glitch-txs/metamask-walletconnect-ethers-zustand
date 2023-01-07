@@ -3,6 +3,7 @@ import create from 'zustand'
 import { connectToMetamask } from '../utils/metamask/connectMetamask'
 import { removeEventsMetamask } from '../utils/metamask/helpers/eventListeners'
 import { metamaskInit } from '../utils/metamask/metamaskInit'
+import { checkChainAndAccount } from '../utils/walletconnect/helper/checkChainAndAccount'
 import { openWCModal } from '../utils/walletconnect/WCConnect'
 import { WCInit } from '../utils/walletconnect/WCInit'
 
@@ -21,7 +22,7 @@ export type CallInfo = {
 
 interface Web3Store {
     //We need a time for the WC init to load
-    isConnecting: boolean
+    isLoading: boolean
     // Modal will trigger the modal and show specific warning depending on the web3 states status.
     modal: '' | 'provider' | 'chain' | 'connect'
     isProvider: boolean
@@ -42,7 +43,7 @@ interface Web3Store {
 
 
 export const useWeb3Store = create<Web3Store>()((set, get) => ({
-    isConnecting: true,
+    isLoading: true,
     modal: '',
     isProvider: true,
     userAccount: '',
@@ -53,21 +54,25 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     clearModal: ()=> {set((state)=> ({ modal: '' }))},
 
     web3Init: async()=> {
+        set((state)=>({isLoading: true}))
+        
         const WCProvider_ = await WCInit()
         set((state)=>({childProvider: WCProvider_}))
+
+        if((WCProvider_.session)) return
 
         const metamaskProvider = await metamaskInit()
         if(get().userAccount != ''){
             set((state)=>({childProvider: metamaskProvider}))
         }
 
-        set((state)=>({isConnecting: false}))
+        set((state)=>({isLoading: false}))
         
         return ()=> removeEventsMetamask(metamaskProvider)
     },
 
     connectMetamask: async()=>{
-        set((state)=>({isConnecting: true}))
+        set((state)=>({isLoading: true}))
         const connectedProvider = await connectToMetamask()
 
         //if userAccount == '' it means the user rejected the connection 
@@ -78,7 +83,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             window.open('https://metamask.app.link/dapp/metamask-walletconnect-ethers-zustand.vercel.app/', '_blank');
         }
         
-        set((state)=>({isConnecting: false}))
+        set((state)=>({isLoading: false}))
     },
 
     //Connect to walletconnet, popups QR modal
@@ -106,9 +111,14 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         }
     },
 
-    //We won't currently use this
-    disconnectWC: ()=> {
-        get().childProvider?.disconnect()
+    disconnectWC: async ()=> {
+        set((state)=>({isLoading: true}))
+        //check if there's a session in Walletconnect
+        if(get().childProvider && get().childProvider.session){
+            await get().childProvider?.disconnect()
+            get().restartWeb3()
+        }
+        set((state)=>({isLoading: false}))
     },
 
     callContract: async(contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> {
@@ -153,17 +163,10 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     },
 
     restartWeb3:async()=>{
-        set((state)=>({isConnecting: true}))
+        set((state)=>({isLoading: true, userAccount: '', Provider: null, childProvider: null}))
 
-        const WCProvider_ = await WCInit()
-        set((state)=>({childProvider: WCProvider_}))
+        get().web3Init()
 
-        //I think this is not needed here
-        const metamaskProvider = await metamaskInit()
-        if(get().userAccount != ''){
-            set((state)=>({childProvider: metamaskProvider}))
-        }
-
-        set((state)=>({isConnecting: false}))
+        set((state)=>({isLoading: false}))
     }
 }))

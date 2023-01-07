@@ -17,11 +17,11 @@ export const connectToMetamask = async ()=>{
               if (err.code === 4001) {
                 // EIP-1193 userRejectedRequest error
                 // If this happens, the user rejected the connection request.
-                console.log('user rejected the connection request');
+                console.log('Metamask: user rejected the connection request');
                 // const web3Init = useWeb3Store.getState().web3Init
                 // web3Init()
               } else {
-                console.error('request connection error',err);
+                console.error('Metamask: request connection error',err);
               }
             });
         }
@@ -52,7 +52,7 @@ export const connectToMetamask = async ()=>{
                   ],
                 })
                 .then(requestConnection)
-                .catch((er: any)=>console.error("user rejected the add new chain request",er))
+                .catch((er: any)=>console.error("Metamask: user rejected the add new chain request",er))
             }
           })
     }
