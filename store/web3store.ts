@@ -59,7 +59,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         const WCProvider_ = await WCInit()
         set((state)=>({childProvider: WCProvider_}))
 
-        if((WCProvider_.session)) return
+        if(WCProvider_?.session) return
 
         const metamaskProvider = await metamaskInit()
         if(get().userAccount != ''){
