@@ -16,18 +16,15 @@ export const connectToMetamask = async ()=>{
             .catch((err: any) => {
               if (err.code === 4001) {
                 // EIP-1193 userRejectedRequest error
-                // If this happens, the user rejected the connection request.
                 console.log('Metamask: user rejected the connection request');
-                // const web3Init = useWeb3Store.getState().web3Init
-                // web3Init()
               } else {
                 console.error('Metamask: request connection error',err);
               }
             });
         }
 
-          // metamask will ask firt to switch to the desired chain network, if user doesn't have the network it will
-          // add request to add it automatically, after the user is in the intended network it will ask him to connect.
+          // metamask will asks first to switch to the desired chain network, if user doesn't have the network listed it will
+          // request to add it automatically, after the user is in the intended network it will asks him to connect.
           await provider.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: '0x38' }],

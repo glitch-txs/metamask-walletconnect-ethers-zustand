@@ -9,7 +9,8 @@ declare global{
 //True if user is on mobile
 const mobile = isOnMobile()
 
-//Check if theres the provider, on mobile or needs to isntall metamask
+//Check if there's Metamask provider, on mobile or needs to install metamask
+//If MM Provider exists then returns it
 export const checkMetamask = ()=>{
   if(typeof window != 'undefined'){
     if(window.ethereum){

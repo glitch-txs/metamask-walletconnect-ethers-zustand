@@ -83,7 +83,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({childProvider: connectedProvider}))
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
-            window.open('https://metamask.app.link/dapp/metamask-walletconnect-ethers-zustand.vercel.app/', '_blank');
+            window.open('https://https://metamask.io/download/', '_blank');
         }
         
         set((state)=>({isLoading: false}))
