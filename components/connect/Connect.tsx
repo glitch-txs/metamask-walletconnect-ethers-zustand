@@ -38,6 +38,9 @@ export default function Connect() {
       disconnectWC()
       return
     }
+
+    if (isLoading) return
+
     setModal(true)
   }
 
@@ -47,7 +50,7 @@ export default function Connect() {
 
   return (
     <div className={s.container}>
-      <button onClick={handleConnect} >{ userAccount != '' ? 'Connected' : (isLoading ? 'Loading' : 'Connect') }</button>
+      <button onClick={handleConnect} >{ userAccount != '' ? 'Connected' : (isLoading ? 'Connecting' : 'Connect') }</button>
 
       <Modal modal={modal} setModal={setModal} >
 
