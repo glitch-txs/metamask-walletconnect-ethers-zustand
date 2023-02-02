@@ -2,22 +2,15 @@ import React from 'react'
 import s from './case.module.css'
 
 type Props = {
-  clearModal: ()=>void
+  modalState: string
 }
 
-const Chain = ({clearModal}: Props) => {
-
-  // const handleSwitch = ()=>{
-  //   clearModal()
-
-  // }
+const Chain = ({ modalState}: Props) => {
 
   return (
     <div className={s.container}>
       <div className={s.title} >Wrong Chain Id</div>
-      <div className={s.description} >Please Switch to the Correct Blockchain Network.</div>
-      <div></div>
-      {/* <button onClick={handleSwitch} >Connect</button> */}
+      <div className={s.description} >Please Switch to the {modalState} Network.</div>
     </div>
   )
 }

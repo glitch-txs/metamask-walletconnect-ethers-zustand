@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import s from './ContractCall.module.css'
 import { CallInfo, ContractInfo, useWeb3Store } from '../../store/web3store'
+import { networks } from '../../utils/networks'
 
 const ContractCall = () => {
 
   const [answer, setAnswer] = useState()
 
   const contractInfo: ContractInfo = {
-    address:'0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+    address:'0x33132493DBfA4072D4655fe3f8238cbB940FaC4a',
     abi: [
         "function name() view returns (string)",
         "function approve(address spender, uint256 amount)"
-      ]
+      ],
+      network: networks.Mainnet
   }
 
   const callInfo: CallInfo = {
@@ -52,7 +54,8 @@ export const WriteCall = () => {
     abi: [
         "function name() view returns (string)",
         "function approve(address spender, uint256 amount)"
-      ]
+      ],
+      network: networks.Polygon
   }
 
   const callInfo: CallInfo = {

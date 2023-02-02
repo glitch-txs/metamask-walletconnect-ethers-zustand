@@ -50,7 +50,7 @@ const ModalWarn = ({setModal}: Props) => {
                       switch(modalState){
                         case 'connect': return <Connect setModal={setModal} clearModal={clearModal} />
                         case 'provider': return <Provider clearModal={clearModal} />
-                        case 'chain': return <Chain clearModal={clearModal} />
+                        default: return <Chain modalState={modalState} />
                       }
                       })()}
 

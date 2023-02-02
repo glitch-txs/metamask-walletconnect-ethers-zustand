@@ -9,10 +9,16 @@ import { WCInit } from '../utils/walletconnect/WCInit'
 
 //WC stands for Walletconnect
 
+export type SupportedNetworks = "Binance Smart Chain" | 'Fantom' | 'Polygon' | 'Ethereum Mainnet' | 'Avalanche'
+
 export type ContractInfo = {
     address: string
     abi: any
-    chainId: string
+    network: {
+        name: SupportedNetworks
+        hexId: string
+        eipId: string
+    }
 }
 
 export type CallInfo = {
@@ -25,10 +31,11 @@ interface Web3Store {
     //We need a time for the WC init to load
     isLoading: boolean
     // Modal will trigger the modal and show specific warning depending on the web3 states status.
-    modal: '' | 'provider' | 'chain' | 'connect'
+    modal: '' | 'provider' | SupportedNetworks | 'connect'
     isProvider: boolean
     //if WC connect init fails to connect this will be false
     WCInitFailed: boolean
+    isWC: boolean
     userAccount: string
     chainId: string
     Provider: any
@@ -50,6 +57,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     modal: '',
     isProvider: true,
     WCInitFailed: false,
+    isWC: false,
     userAccount: '',
     chainId: '',
     Provider: null,
@@ -63,7 +71,10 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         const WCProvider_ = await WCInit()
         set((state)=>({childProvider: WCProvider_}))
 
-        if(WCProvider_?.session) return
+        if(WCProvider_?.session) {
+            set((state)=>({isWC: true}))
+            return
+        }
 
         const metamaskProvider = await metamaskInit()
         if(get().userAccount != ''){
@@ -81,6 +92,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
         //if userAccount == '' it means the user rejected the connection 
         if(get().userAccount != '' && Boolean(connectedProvider)){
+            set((state)=>({isWC: false}))
             set((state)=>({childProvider: connectedProvider}))
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
@@ -103,6 +115,8 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
         //If the user refects the connection userConnected is going to be false, to prevent errors when init provider.
         if(userConnected){
+            set((state)=>({isWC: true}))
+
             const web3Provider = new ethers.providers.Web3Provider(get().childProvider)
             const signer = web3Provider.getSigner()
     
@@ -133,11 +147,14 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({ modal: 'provider' }))
         }else if(get().userAccount == ''){
             set((state)=>({ modal: 'connect' }))
-        }else if(get().chainId != contractInfo.chainId){
-            set((state)=>({ modal: 'chain' }))
+        }else if(!(get().chainId == contractInfo.network.hexId || get().isWC)){
+            set((state)=>({ modal: contractInfo.network.name }))
         }else if(get().childProvider != null){
 
             let answer: any;
+
+            if(get().isWC)
+            get().childProvider.setDefaultChain(contractInfo.network.eipId)
 
             const web3Provider = new ethers.providers.Web3Provider(get().childProvider)
             const signer = web3Provider.getSigner()
@@ -169,8 +186,8 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     },
 
     restartWeb3:async()=>{
-        set((state)=>({isLoading: true, userAccount: '', Provider: null, childProvider: null}))
-
+        set((state)=>({isLoading: true, userAccount: '', isWC: false, Provider: null, childProvider: null}))
+        window.localStorage.clear()
         get().web3Init()
 
         set((state)=>({isLoading: false}))

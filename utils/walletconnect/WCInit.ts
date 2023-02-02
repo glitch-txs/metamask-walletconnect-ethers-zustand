@@ -5,6 +5,7 @@ import { checkChainAndAccount } from "./helper/checkChainAndAccount";
 
 export const web3Modal = new Web3Modal({ 
   // projectId: process.env.NEXT_PUBLIC_PROJECT_ID 
+  standaloneChains:["eip155:56", "eip155:250", "eip155:137", "eip155:1", "eip155:43114"]
 })
   
 web3Modal.setTheme({

@@ -22,7 +22,7 @@ const handleAccount = (accounts: string[]) => {
 
 const handleChain = (chainId: string) => {
     useWeb3Store.setState({ chainId })
-        console.log('Metamask: chain id - ', chainId)
+    console.log('Metamask: chain id - ', chainId)
 }
 
 const handleConnect = (connectInfo: ConnectInfo)=>{
