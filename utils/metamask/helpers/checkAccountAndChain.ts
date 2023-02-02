@@ -16,13 +16,10 @@ export const checkAccountAndChainId = async(provider: any)=>{
   
     //if there's an account then the user is connected to a specific chain
     await provider.request({ method: 'eth_chainId' }).then((chainId: any)=> {
-      if(chainId != '0x38'){
-        useWeb3Store.setState({ chainId: false })
-        console.log('Metamask: invalid chain id')
-      }else if(chainId == '0x38'){
-        useWeb3Store.setState({ chainId: true })
-        console.log('Metamask: valid chain id')
-      }
+
+    useWeb3Store.setState({ chainId })
+
+    console.log('Metamask: chain id - ', chainId)
     })
   })
 }

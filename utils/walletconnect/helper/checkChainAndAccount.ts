@@ -15,11 +15,9 @@ export const checkChainAndAccount = async (provider: any)=>{
 
     const chainId = await signer.getChainId()
 
-    if(chainId != 56){
-        useWeb3Store.setState({ chainId: false })
-        console.log('WC: invalid chain id')
-    }else if(chainId == 56){
-        useWeb3Store.setState({ chainId: true })
-        console.log('WC: valid chain id')
-    }
+    const hexChain = ethers.utils.hexValue(chainId)
+
+    useWeb3Store.setState({ chainId: hexChain })
+
+    console.log(`WC: chain id - ${chainId}`)
 }

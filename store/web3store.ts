@@ -12,12 +12,13 @@ import { WCInit } from '../utils/walletconnect/WCInit'
 export type ContractInfo = {
     address: string
     abi: any
+    chainId: string
 }
 
 export type CallInfo = {
     name: string
     params: any[]
-    action: 'read' | 'write'  
+    action: 'read' | 'write'
 }
 
 interface Web3Store {
@@ -29,7 +30,7 @@ interface Web3Store {
     //if WC connect init fails to connect this will be false
     WCInitFailed: boolean
     userAccount: string
-    chainId: boolean
+    chainId: string
     Provider: any
     childProvider: any
 
@@ -50,7 +51,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     isProvider: true,
     WCInitFailed: false,
     userAccount: '',
-    chainId: false,
+    chainId: '',
     Provider: null,
     childProvider: null,
 
@@ -109,14 +110,10 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({userAccount: address}))
     
             const chainId = await signer.getChainId()
-    
-            if(chainId != 56){
-                set((state)=>({ chainId: false }))
-                console.log('invalid chain id')
-            }else if(chainId == 56){
-                set((state)=>({ chainId: true }))
-                console.log('valid chain id')
-            }
+
+            const hexChain = ethers.utils.hexValue(chainId)
+
+            set((state)=>({ chainId: hexChain }))
         }
     },
 
@@ -136,7 +133,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({ modal: 'provider' }))
         }else if(get().userAccount == ''){
             set((state)=>({ modal: 'connect' }))
-        }else if(!get().chainId){
+        }else if(get().chainId != contractInfo.chainId){
             set((state)=>({ modal: 'chain' }))
         }else if(get().childProvider != null){
 

@@ -21,13 +21,8 @@ const handleAccount = (accounts: string[]) => {
 }
 
 const handleChain = (chainId: string) => {
-    if(chainId != '0x38'){
-        useWeb3Store.setState({ chainId: false })
-        console.log('Metamask: invalid chain id')
-    }else if(chainId == '0x38'){
-        useWeb3Store.setState({ chainId: true })
-        console.log('Metamask: valid chain id')
-    }
+    useWeb3Store.setState({ chainId })
+        console.log('Metamask: chain id - ', chainId)
 }
 
 const handleConnect = (connectInfo: ConnectInfo)=>{
