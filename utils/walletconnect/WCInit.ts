@@ -27,7 +27,6 @@ export const WCInit = async()=> {
       url: "mywebsite.com",
       icons: ["https://lh3.googleusercontent.com/ogw/AOh-ky0c2alK5GAwefGWkwQHVpcJR637KRzHSZx9dV31rg=s32-c-mo"],
     },
-    //This catch is agressive, as it prevents the use of Metamask if WC failed to connect
   }).catch( e=> {
     console.log("SOMEHEJOFN  ",e)
     useWeb3Store.setState({WCInitFailed: true})
