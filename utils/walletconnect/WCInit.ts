@@ -28,7 +28,9 @@ export const WCInit = async()=> {
       icons: ["https://lh3.googleusercontent.com/ogw/AOh-ky0c2alK5GAwefGWkwQHVpcJR637KRzHSZx9dV31rg=s32-c-mo"],
     },
     //This catch is agressive, as it prevents the use of Metamask if WC failed to connect
-  }).catch( e=> useWeb3Store.setState({WCInitFailed: true}) );
+  }).catch( e=> {
+    console.log("SOMEHEJOFN  ",e)
+    useWeb3Store.setState({WCInitFailed: true}) });
   
   provider?.on("display_uri", async (uri: any) => {
     web3Modal?.openModal({ uri });
