@@ -30,7 +30,8 @@ export const WCInit = async()=> {
     //This catch is agressive, as it prevents the use of Metamask if WC failed to connect
   }).catch( e=> {
     console.log("SOMEHEJOFN  ",e)
-    useWeb3Store.setState({WCInitFailed: true}) });
+    // useWeb3Store.setState({WCInitFailed: true})
+   });
   
   provider?.on("display_uri", async (uri: any) => {
     web3Modal?.openModal({ uri });
