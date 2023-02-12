@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property='og:description' content='Boilerpalte for metamask and walletconect v2'/>
         <meta property="og:type" content="website" />
         <meta property='og:url' content='https://metamask-walletconnect-ethers-zustand.vercel.app/'/>
-        <meta property='og:image' content='/chain.jpg'/>
+        <meta property='og:image' content='https://metamask-walletconnect-ethers-zustand.vercel.app/chain.jpg'/>
       </Head>
       <Component {...pageProps} />
     </>
