@@ -5,11 +5,6 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content="Metamask Zustand jasndjansdakopokp" />
-        <meta property="og:title" content="Here some text title :)" />
-        <meta property='og:type' content='Boilerpalte for metamask and walletconect v2'/>
-        <meta property='og:url' content='https://metamask-walletconnect-ethers-zustand.vercel.app/'/>
-        <meta property='og:image' content='https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png'/>
       </Head>
       <body>
         <Main />

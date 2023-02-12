@@ -7,6 +7,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Metamask Zustand hehe</title>
+        <meta property="og:title" content="Here some text title :)" />
+        <meta property='og:description' content='Boilerpalte for metamask and walletconect v2'/>
+        <meta property='og:url' content='https://metamask-walletconnect-ethers-zustand.vercel.app/'/>
+        <meta property='og:image' content='https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png'/>
       </Head>
       <Component {...pageProps} />
     </>
