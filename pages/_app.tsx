@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:type" content="website" />
         <meta property='og:url' content='https://metamask-walletconnect-ethers-zustand.vercel.app/'/>
         <meta property='og:image' content='https://metamask-walletconnect-ethers-zustand.vercel.app/chain.jpg'/>
-        <meta property='twitter:image' content='https://metamask-walletconnect-ethers-zustand.vercel.app/chain.jpg'/>
+        <meta name="twitter:card" content="summary_large_image"/>
       </Head>
       <Component {...pageProps} />
     </>
