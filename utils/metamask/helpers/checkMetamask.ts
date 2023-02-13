@@ -25,13 +25,7 @@ export const checkMetamask = ()=>{
       }
 
       return provider
-    }
-    else if(mobile){
-        // Hide on mobile, it can be connected with Walletconnect.
-        window.open('https://metamask.app.link/dapp/seedify.fund/', '_blank')
-        return false
     }else{
-        window.open('https://https://metamask.io/download/', '_blank')
         return false
     }
   }

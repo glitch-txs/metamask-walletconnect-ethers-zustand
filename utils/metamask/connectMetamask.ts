@@ -1,4 +1,3 @@
-import { useWeb3Store } from "../../store/web3store"
 import { checkAccountAndChainId } from "./helpers/checkAccountAndChain"
 import { checkMetamask } from "./helpers/checkMetamask"
 
@@ -7,6 +6,11 @@ export const connectToMetamask = async ()=>{
     window.localStorage.clear()
 
     const provider = checkMetamask()
+
+    if(!provider){
+      window.open('https://metamask.app.link/dapp/seedify.fund/', '_blank')
+
+    }
 
     if(Boolean(provider)){
 
