@@ -8,7 +8,7 @@ export const connectToMetamask = async ()=>{
     const provider = checkMetamask()
 
     if(!provider){
-      window.open('https://metamask.app.link/dapp/seedify.fund/', '_blank')
+      window.open('https://metamask.app.link/dapp/seedify.fund/')
       return
     }
 
