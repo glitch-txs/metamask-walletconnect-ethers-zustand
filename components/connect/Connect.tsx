@@ -24,12 +24,8 @@ export default function Connect() {
 
   const handleClick = (connect: ()=>void)=>{
     //If user is on mobile WC will open a link for options like Metamask or Walletconnect
-    if(mobile){
-      connectWC()
-    }else{
       setModal(false)
       connect()
-    }
   }
 
   const handleConnect = ()=>{
