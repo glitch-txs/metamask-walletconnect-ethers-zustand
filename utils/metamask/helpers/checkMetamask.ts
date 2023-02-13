@@ -25,7 +25,12 @@ export const checkMetamask = ()=>{
       }
 
       return provider
+    }
+    else if(mobile){
+        // Hide on mobile, it can be connected with Walletconnect.
+        return false
     }else{
+        console.log('Onboarding to install Metamask')
         return false
     }
   }

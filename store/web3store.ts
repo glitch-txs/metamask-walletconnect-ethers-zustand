@@ -94,6 +94,9 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         if(get().userAccount != '' && Boolean(connectedProvider)){
             set((state)=>({isWC: false}))
             set((state)=>({childProvider: connectedProvider}))
+        } else if(!connectedProvider){
+            //If metamask is not installed then it will open this link to install the extention. (Deeplink)
+            window.open('https://metamask.io/download/', '_blank');
         }
         
         set((state)=>({isLoading: false}))
