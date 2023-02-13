@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import create from 'zustand'
+import { isOnMobile } from '../utils/handleMobile'
 import { connectToMetamask } from '../utils/metamask/connectMetamask'
 import { removeEventsMetamask } from '../utils/metamask/helpers/eventListeners'
 import { metamaskInit } from '../utils/metamask/metamaskInit'
@@ -8,6 +9,9 @@ import { openWCModal } from '../utils/walletconnect/WCConnect'
 import { WCInit } from '../utils/walletconnect/WCInit'
 
 //WC stands for Walletconnect
+
+//True if user is on mobile
+const mobile = isOnMobile()
 
 export type SupportedNetworks = "Binance Smart Chain" | 'Fantom' | 'Polygon' | 'Ethereum Mainnet' | 'Avalanche'
 
@@ -96,7 +100,11 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({childProvider: connectedProvider}))
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
-            window.open('https://metamask.io/download/', '_blank');
+            if(mobile){
+                window.open('https://metamask.app.link/dapp/seedify.fund/');
+            }else{
+                window.open('https://metamask.io/download/', '_blank');
+            }
         }
         
         set((state)=>({isLoading: false}))
