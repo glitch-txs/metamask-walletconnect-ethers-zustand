@@ -101,7 +101,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
             if(mobile){
-                window.open('https://metamask.app.link/dapp/seedify.fund/');
+                window.open('ADD_DEEPLNK_URL_HERE');
             }else{
                 window.open('https://metamask.io/download/', '_blank');
             }
