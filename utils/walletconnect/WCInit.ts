@@ -4,7 +4,8 @@ import { useWeb3Store } from "../../store/web3store";
 import { checkChainAndAccount } from "./helper/checkChainAndAccount";
 
 export const web3Modal = new Web3Modal({ 
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
+  walletConnectVersion:2,
   standaloneChains:["eip155:56", "eip155:250", "eip155:137", "eip155:1", "eip155:43114"]
 })
   
