@@ -30,7 +30,7 @@ export const WCInit = async()=> {
       icons: ["https://lh3.googleusercontent.com/ogw/AOh-ky0c2alK5GAwefGWkwQHVpcJR637KRzHSZx9dV31rg=s32-c-mo"],
     },
   }).catch( e=> {
-    console.log("SOMEHEJOFN  ",e)
+    console.log("WC Init error: ",e)
     useWeb3Store.setState({WCInitFailed: true})
    });
   
