@@ -1,4 +1,3 @@
-import { getProvider } from "./getProvider";
 
 export const listenEvents = (provider: any)=>{
     provider.on("connect", (publicKey: any) => {

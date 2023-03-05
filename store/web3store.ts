@@ -1,12 +1,12 @@
 import { ethers } from 'ethers'
 import create from 'zustand'
 import { isOnMobile } from '../utils/handleMobile'
-import { connectToMetamask } from '../utils/metamask/connectMetamask'
-import { removeEventsMetamask } from '../utils/metamask/helpers/eventListeners'
-import { metamaskInit } from '../utils/metamask/metamaskInit'
-import { checkChainAndAccount } from '../utils/walletconnect/helper/checkChainAndAccount'
-import { openWCModal } from '../utils/walletconnect/WCConnect'
-import { WCInit } from '../utils/walletconnect/WCInit'
+import { connectToMetamask } from '../actions/metamask/connectMetamask'
+import { removeEventsMetamask } from '../actions/metamask/helpers/eventListeners'
+import { metamaskInit } from '../actions/metamask/metamaskInit'
+import { checkChainAndAccount } from '../actions/walletconnect/helper/checkChainAndAccount'
+import { openWCModal } from '../actions/walletconnect/WCConnect'
+import { WCInit } from '../actions/walletconnect/WCInit'
 
 //WC stands for Walletconnect
 
@@ -195,6 +195,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
     restartWeb3:async()=>{
         set((state)=>({isLoading: true, userAccount: '', isWC: false, Provider: null, childProvider: null}))
+        console.log("web3 state restarted")
         window.localStorage.clear()
         get().web3Init()
 

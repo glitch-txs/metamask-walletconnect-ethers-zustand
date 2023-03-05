@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { PhConnect, PhDisconnect } from '../utils/phantom/PhConnect'
-import { PhInit } from '../utils/phantom/PhInit'
+import { PhConnect, PhDisconnect } from '../actions/phantom/PhConnect'
+import { PhInit } from '../actions/phantom/PhInit'
 
 const phantom = () => {
     useEffect(()=>{

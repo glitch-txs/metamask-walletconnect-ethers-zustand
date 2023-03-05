@@ -1,6 +1,6 @@
 import { web3Modal } from "./WCInit";
 import { useWeb3Store } from '../../store/web3store'
-import { networks } from "../networks";
+import { networks } from "../../chains";
 
 export const openWCModal = async()=> {
   let approved = false

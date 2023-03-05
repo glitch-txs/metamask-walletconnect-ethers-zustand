@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import s from './ContractCall.module.css'
 import { CallInfo, ContractInfo, useWeb3Store } from '../../store/web3store'
-import { networks } from '../../utils/networks'
+import { networks } from '../../chains'
 
 const ContractCall = () => {
 
