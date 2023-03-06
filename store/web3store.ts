@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import create from 'zustand'
+import { create } from 'zustand'
 import { isOnMobile } from '../utils/handleMobile'
 import { connectToMetamask } from '../actions/metamask/connectMetamask'
 import { removeEventsMetamask } from '../actions/metamask/helpers/eventListeners'

@@ -63,6 +63,7 @@ export default function Connect() {
         Trust Wallet
         <span>Connect to your Trust Wallet wallet</span>
       </div>
+      <hr className={s.hr} />
       <div className={s.btnContainer} onClick={()=>handleClick(connectWC)}>
         <Image src={walletconnect} width={60} alt='' />
         Walletconnect
