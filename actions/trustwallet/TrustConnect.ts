@@ -25,7 +25,10 @@ export const TrustConnect = async()=>{
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: '0x38' }],
         }).then(requestConnection)
-        .catch((er: any)=>console.error("Metamask: user rejected the add new chain request",er))
+        .catch((er: any)=>{
+          requestConnection()
+          console.error("Metamask: user rejected the add new chain request",er)
+        })
     }
 
     return provider

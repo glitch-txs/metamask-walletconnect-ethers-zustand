@@ -48,7 +48,10 @@ export const connectToMetamask = async ()=>{
                   ],
                 })
                 .then(requestConnection)
-                .catch((er: any)=>console.error("Metamask: user rejected the add new chain request",er))
+                .catch((er: any)=>{
+                  requestConnection()
+                  console.error("Metamask: user rejected the add new chain request",er)
+                })
             }
           })
     }
