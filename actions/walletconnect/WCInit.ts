@@ -7,6 +7,7 @@ export const web3Modal = new Web3Modal({
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
   walletConnectVersion:2,
   standaloneChains:["eip155:56", "eip155:250", "eip155:137", "eip155:1", "eip155:43114"],
+  themeZIndex:99999
 })
   
 web3Modal.setTheme({
