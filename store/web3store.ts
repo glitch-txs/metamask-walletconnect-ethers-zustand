@@ -84,12 +84,14 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
 
         if(WCProvider_?.session) {
             set((state)=>({isWC: true}))
+            set((state)=>({isLoading: false}))
             return
         }
 
         const metamaskProvider = await metamaskInit()
         if(get().userAccount != ''){
             set((state)=>({childProvider: metamaskProvider}))
+            set((state)=>({isLoading: false}))
             return
         }
 
