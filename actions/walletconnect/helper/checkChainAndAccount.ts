@@ -15,9 +15,7 @@ export const checkChainAndAccount = async (provider: any)=>{
 
     const chainId = await signer.getChainId()
 
-    const hexChain = ethers.utils.hexValue(chainId)
-
-    useWeb3Store.setState({ chainId: hexChain })
+    useWeb3Store.setState({ chainId: chainId })
 
     console.log(`WC: chain id - ${chainId}`)
 }
