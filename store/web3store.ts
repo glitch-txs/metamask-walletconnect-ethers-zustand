@@ -4,9 +4,10 @@ import { isOnMobile } from '../utils/handleMobile'
 import { connectToMetamask } from '../actions/metamask/connectMetamask'
 import { removeEventsMetamask } from '../actions/metamask/helpers/eventListeners'
 import { metamaskInit } from '../actions/metamask/metamaskInit'
-import { checkChainAndAccount } from '../actions/walletconnect/helper/checkChainAndAccount'
 import { openWCModal } from '../actions/walletconnect/WCConnect'
 import { WCInit } from '../actions/walletconnect/WCInit'
+import { TrustConnect } from '../actions/trustwallet/TrustConnect'
+import { TrustInit } from '../actions/trustwallet/TrustInit'
 
 //WC stands for Walletconnect
 
@@ -41,14 +42,16 @@ interface Web3Store {
     WCInitFailed: boolean
     isWC: boolean
     userAccount: string
-    chainId: string
+    chainId: number
     Provider: any
     childProvider: any
+    emergencyProviderWC: any
 
     clearModal: ()=>void
 
     web3Init: ()=> void
     connectMetamask: ()=> void
+    connectTrustWallet: ()=> void
     connectWC: ()=> void
     disconnectWC: ()=> void
     callContract: (contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> any
@@ -63,9 +66,10 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     WCInitFailed: false,
     isWC: false,
     userAccount: '',
-    chainId: '',
+    chainId: 0,
     Provider: null,
     childProvider: null,
+    emergencyProviderWC: null,
 
     clearModal: ()=> {set((state)=> ({ modal: '' }))},
 
@@ -75,8 +79,17 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         const WCProvider_ = await WCInit()
         set((state)=>({childProvider: WCProvider_}))
 
+        //used to check WC sessions when there are other wallets' interactions happening
+        set((state)=>({emergencyProviderWC: WCProvider_}))
+
         if(WCProvider_?.session) {
             set((state)=>({isWC: true}))
+            return
+        }
+
+        const trustWalletProvider = await TrustInit()
+        if(get().userAccount != ''){
+            set((state)=>({childProvider: trustWalletProvider}))
             return
         }
 
@@ -101,9 +114,29 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
             if(mobile){
-                window.open('ADD_DEEPLNK_URL_HERE');
+                window.open('https://metamask.app.link/dapp/metamask-walletconnect-ethers-zustand.vercel.app/');
             }else{
                 window.open('https://metamask.io/download/', '_blank');
+            }
+        }
+        
+        set((state)=>({isLoading: false}))
+    },
+
+    connectTrustWallet: async()=>{
+        set((state)=>({isLoading: true}))
+        const connectedProvider = await TrustConnect()
+
+        //if userAccount == '' it means the user rejected the connection 
+        if(get().userAccount != '' && Boolean(connectedProvider)){
+            set((state)=>({isWC: false}))
+            set((state)=>({childProvider: connectedProvider}))
+        } else if(!connectedProvider){
+            //If Trust Wallet is not installed then it will open this link to install the extention. (Deeplink)
+            if(mobile){
+                window.open('https://link.trustwallet.com/open_url?coin_id=60&url=https://metamask-walletconnect-ethers-zustand.vercel.app/');
+            }else{
+                window.open('https://trustwallet.com/browser-extension/', '_blank');
             }
         }
         
@@ -133,9 +166,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     
             const chainId = await signer.getChainId()
 
-            const hexChain = ethers.utils.hexValue(chainId)
-
-            set((state)=>({ chainId: hexChain }))
+            set((state)=>({ chainId: chainId }))
         }
     },
 
@@ -155,7 +186,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             set((state)=>({ modal: 'provider' }))
         }else if(get().userAccount == ''){
             set((state)=>({ modal: 'connect' }))
-        }else if(!(get().chainId == contractInfo.network.hexId || get().isWC)){
+        }else if(!(get().chainId == Number(contractInfo.network.hexId) || get().isWC)){
             set((state)=>({ modal: contractInfo.network.name }))
         }else if(get().childProvider != null){
 
@@ -196,6 +227,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
     restartWeb3:async()=>{
         set((state)=>({isLoading: true, userAccount: '', isWC: false, Provider: null, childProvider: null}))
         console.log("web3 state restarted")
+        get().disconnectWC()
         window.localStorage.clear()
         get().web3Init()
 

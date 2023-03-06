@@ -10,18 +10,20 @@ const handleAccount = (accounts: string[]) => {
     if(typeof accounts[0] !== 'undefined'){
         //if Metamask is locked then the provider won't get the user account as if they were connected
         //If use unlock their metamask wallet after connecting to WC then there will be a conflict between them
-        useWeb3Store.getState().disconnectWC()
+        if(useWeb3Store.getState().emergencyProviderWC?.session){
+            useWeb3Store.getState().restartWeb3()
+        }
         useWeb3Store.setState({ userAccount: accounts[0]})
         console.log('Metamask: user changed address to: ', accounts[0])
       }else{
-        useWeb3Store.setState({ userAccount: ''})
+        //we set the WC provider as childProvider when restarting, so user can reconnect on WC
         useWeb3Store.getState().restartWeb3()
         console.log('Metamask: user has disconnect')
       }
 }
 
 const handleChain = (chainId: string) => {
-    useWeb3Store.setState({ chainId })
+    useWeb3Store.setState({ chainId: Number(chainId) })
     console.log('Metamask: chain id - ', chainId)
 }
 

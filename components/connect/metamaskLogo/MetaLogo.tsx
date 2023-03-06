@@ -16,7 +16,6 @@ const MetaLogo = () => {
     let heightFox = widthFox * 0.8;
     let followMouse = true;
     
-
     const viewer = ModelViewer({
       pxNotRatio: true,
       width: widthFox,

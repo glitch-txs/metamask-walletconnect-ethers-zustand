@@ -19,7 +19,7 @@ export default function Connect() {
   const isLoading = useWeb3Store((state)=>state.isLoading)
   const userAccount = useWeb3Store((state)=>state.userAccount)
   
-  const [modal, setModal] = useState<boolean>(true)
+  const [modal, setModal] = useState<boolean>(false)
 
   const mobile = isOnMobile()
 
