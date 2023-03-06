@@ -28,6 +28,7 @@ export const TrustConnect = async()=>{
         .catch((er: any)=>{
           requestConnection()
           console.error("Metamask: user rejected the add new chain request",er)
+          return provider
         })
     }
 
