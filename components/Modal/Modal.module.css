@@ -81,3 +81,13 @@
 
     transition: all 1s;
 }
+
+@media (max-width: 520px){
+    .card{
+        width: 90%;
+    }
+
+    .cardClose{
+        width: 90%;
+    }
+}

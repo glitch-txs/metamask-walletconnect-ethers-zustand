@@ -7,10 +7,15 @@ const MetaLogo = () => {
   const metaRef = useRef<HTMLDivElement>(null)
 
   useEffect(()=> {
-
+    
     let widthFox = 100;
+
+    if(typeof window != "undefined" && window.innerWidth < 360)
+    widthFox = 80
+    
     let heightFox = widthFox * 0.8;
     let followMouse = true;
+    
 
     const viewer = ModelViewer({
       pxNotRatio: true,

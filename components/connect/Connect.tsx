@@ -4,6 +4,7 @@ import { useWeb3Store } from '../../store/web3store';
 import s from './Connect.module.css'
 import Image from 'next/image';
 import trust from '../../public/trust.svg'
+import walletconnect from '../../public/walletconnect.png'
 import MetaLogo from './metamaskLogo/MetaLogo';
 import { isOnMobile } from '../../utils/handleMobile';
 import ModalWarn from '../ModalWarn/ModalWarn';
@@ -18,7 +19,7 @@ export default function Connect() {
   const isLoading = useWeb3Store((state)=>state.isLoading)
   const userAccount = useWeb3Store((state)=>state.userAccount)
   
-  const [modal, setModal] = useState<boolean>(false)
+  const [modal, setModal] = useState<boolean>(true)
 
   const mobile = isOnMobile()
 
@@ -53,12 +54,17 @@ export default function Connect() {
       <div className={s.btnContainer} onClick={()=>handleClick(connectMM)}>
         <MetaLogo/>
         Metamask
-        <span>Connect to Your MetaMask Wallet</span>
+        <span>Connect to your MetaMask wallet</span>
       </div>
       <hr className={s.hr} />
       <div className={s.btnContainer} onClick={()=>handleClick(connectWC)}>
         <Image src={trust} width={60} alt='' />
         Trust Wallet
+        <span>Connect to your Trust Wallet wallet</span>
+      </div>
+      <div className={s.btnContainer} onClick={()=>handleClick(connectWC)}>
+        <Image src={walletconnect} width={60} alt='' />
+        Walletconnect
         <span>Scan with Walletconnect to connect</span>
       </div>
 
