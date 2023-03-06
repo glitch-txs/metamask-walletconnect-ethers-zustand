@@ -16,6 +16,7 @@ export default function Connect() {
   const connectWC = useWeb3Store((state)=>state.connectWC)
   const disconnectWC = useWeb3Store((state)=>state.disconnectWC)
   const connectMM = useWeb3Store((state)=>state.connectMetamask)
+  const connectTrustWallet = useWeb3Store((state)=>state.connectTrustWallet)
   const isLoading = useWeb3Store((state)=>state.isLoading)
   const userAccount = useWeb3Store((state)=>state.userAccount)
   
@@ -57,7 +58,7 @@ export default function Connect() {
         <span>Connect to your MetaMask wallet</span>
       </div>
       <hr className={s.hr} />
-      <div className={s.btnContainer} onClick={()=>handleClick(connectWC)}>
+      <div className={s.btnContainer} onClick={()=>handleClick(connectTrustWallet)}>
         <Image src={trust} width={60} alt='' />
         Trust Wallet
         <span>Connect to your Trust Wallet wallet</span>
