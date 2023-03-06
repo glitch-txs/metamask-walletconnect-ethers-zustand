@@ -87,15 +87,15 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             return
         }
 
-        const trustWalletProvider = await TrustInit()
-        if(get().userAccount != ''){
-            set((state)=>({childProvider: trustWalletProvider}))
-            return
-        }
-
         const metamaskProvider = await metamaskInit()
         if(get().userAccount != ''){
             set((state)=>({childProvider: metamaskProvider}))
+            return
+        }
+
+        const trustWalletProvider = await TrustInit()
+        if(get().userAccount != ''){
+            set((state)=>({childProvider: trustWalletProvider}))
         }
 
         set((state)=>({isLoading: false}))
