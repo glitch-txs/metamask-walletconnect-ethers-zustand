@@ -19,15 +19,12 @@ const ContractCall = () => {
   const callInfo: CallInfo = {
     name: 'name',
     params: [],
-
-    //if you set action to 'write' you can pass setStatus as third argument and you'll get the status of the transaction.
-    action: 'read'
   }
 
-   const callContract = useWeb3Store((state)=>(state.callContract))
+   const readContract = useWeb3Store((state)=>(state.readContract))
 
   const handleCall = async()=>{
-    const res = await callContract(contractInfo, callInfo)
+    const res = await readContract(contractInfo, callInfo)
     setAnswer(res)
   }
 
@@ -60,15 +57,14 @@ export const WriteCall = () => {
 
   const callInfo: CallInfo = {
     name: 'approve',
-    params: ['some param', 'second param'],
-    action: 'write'
+    params: ['some param', 'second param']
   }
 
-  const callContract = useWeb3Store((state)=>(state.callContract))
+  const writeContract = useWeb3Store((state)=>(state.writeContract))
 
   return (
     <div  className={s.container}>
-      <button onClick={()=>callContract(contractInfo, callInfo, setStatus)} >Write Contract</button>
+      <button onClick={()=>writeContract(contractInfo, callInfo, setStatus)} >Write Contract</button>
       <div> transaction status: { status } </div>
     </div>
   )

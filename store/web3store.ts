@@ -23,13 +23,13 @@ export type ContractInfo = {
         name: SupportedNetworks
         hexId: string
         eipId: string
+        rpcUrl: string
     }
 }
 
 export type CallInfo = {
     name: string
     params: any[]
-    action: 'read' | 'write'
 }
 
 interface Web3Store {
@@ -54,7 +54,8 @@ interface Web3Store {
     connectTrustWallet: ()=> void
     connectWC: ()=> void
     disconnectWC: ()=> void
-    callContract: (contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> any
+    writeContract: (contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> any
+    readContract: (contractInfo: ContractInfo, callInfo: CallInfo)=> any
     restartWeb3: ()=> void
 }
 
@@ -182,7 +183,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         set((state)=>({isLoading: false}))
     },
 
-    callContract: async(contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> {
+    writeContract: async(contractInfo: ContractInfo, callInfo: CallInfo, setStatus?: (status: string)=> void)=> {
 
         if(!get().isProvider && get().Provider != null){
             set((state)=>({ modal: 'provider' }))
@@ -202,28 +203,28 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
             
             const contract = new ethers.Contract(contractInfo.address, contractInfo.abi, signer)
 
-            if(callInfo.action == 'read'){
-                
-                const res = await contract[callInfo.name](...callInfo.params)
-                answer = res
-
-            }else if(callInfo.action == 'write'){
-
-                setStatus?.('pending')
-                await contract[callInfo.name](...callInfo.params)
-                .then((res: ethers.ContractTransaction) => web3Provider.once(res.hash, ()=> setStatus?.('success')))
-                .catch((e: any)=> {
-                    console.log(e)
-                    setStatus?.('error')
-                })
+            setStatus?.('pending')
+            await contract[callInfo.name](...callInfo.params)
+            .then((res: ethers.ContractTransaction) => web3Provider.once(res.hash, ()=> setStatus?.('success')))
+            .catch((e: any)=> {
+                console.log(e)
+                setStatus?.('error')
+            })
     
-                setTimeout(()=>setStatus?.(''),2000)
+            setTimeout(()=>setStatus?.(''),2000)
 
-            }else{
-                console.log('wrong action in callInfo object')
-            }
-            return answer ? answer : null
         }
+    },
+
+    readContract: async(contractInfo: ContractInfo, callInfo: CallInfo) => {
+
+        const rpcProvider = new ethers.providers.JsonRpcProvider(contractInfo.network.rpcUrl)
+        
+        const contract = new ethers.Contract(contractInfo.address, contractInfo.abi, rpcProvider)
+
+        const res = await contract[callInfo.name](...callInfo.params)
+
+        return res
     },
 
     restartWeb3:async()=>{
