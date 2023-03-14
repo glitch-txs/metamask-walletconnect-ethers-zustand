@@ -24,10 +24,11 @@ export const WCInit = async()=> {
   const provider = await UniversalProvider.init({
     projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
     metadata: {
-      name: "Glitch Dapp",
-      description: "Glitch Dapp",
-      url: "mywebsite.com",
-      icons: ["https://lh3.googleusercontent.com/ogw/AOh-ky0c2alK5GAwefGWkwQHVpcJR637KRzHSZx9dV31rg=s32-c-mo"],
+      name: document.title,
+      description: document?.querySelector('meta[name="description"]')?.textContent ? 
+      document.querySelector('meta[name="description"]')?.textContent as string : "",
+      url: `${window.location.href}`,
+      icons: [`${window.location.href}favicon.ico`],
     },
   }).catch( e=> {
     console.log("WC Init error: ",e)

@@ -117,7 +117,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         } else if(!connectedProvider){
             //If metamask is not installed then it will open this link to install the extention. (Deeplink)
             if(mobile){
-                window.open('https://metamask.app.link/dapp/metamask-walletconnect-ethers-zustand.vercel.app/');
+                window.open(`https://metamask.app.link/dapp/${window.location.href}`);
             }else{
                 window.open('https://metamask.io/download/', '_blank');
             }
@@ -137,7 +137,7 @@ export const useWeb3Store = create<Web3Store>()((set, get) => ({
         } else if(!connectedProvider){
             //If Trust Wallet is not installed then it will open this link to install the extention. (Deeplink)
             if(mobile){
-                window.open('https://link.trustwallet.com/open_url?coin_id=60&url=https://metamask-walletconnect-ethers-zustand.vercel.app/');
+                window.open(`https://link.trustwallet.com/open_url?coin_id=60&url=${window.location.href}`);
             }else{
                 window.open('https://trustwallet.com/browser-extension/', '_blank');
             }
